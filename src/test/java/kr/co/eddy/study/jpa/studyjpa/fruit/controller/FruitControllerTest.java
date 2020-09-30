@@ -17,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -48,12 +49,33 @@ public class FruitControllerTest {
 
         String content = objectMapper.writeValueAsString(fruit);
 
+
         mockMvc.perform(post("/fruit").contentType(MediaType.APPLICATION_JSON).content(content).characterEncoding("utf-8"))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", is("사과")))
                 .andDo(print());
     }
+
+
+    @DisplayName("/fruit/{id} GET 호출")
+    @Test
+    public void GET과일ID로_조회() throws Exception {
+
+        Fruit fruit = Fruit.builder().id((long)1).name("사과").price((long)300).build();
+
+
+        given(fruitService.findFruitById((long)1)).willReturn(fruit);
+
+
+        mockMvc.perform(get("/fruit/1").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", is("사과")))
+                .andExpect(jsonPath("$.price", is(300)))
+                .andDo(print());
+
+
+    }
+
 
 
 

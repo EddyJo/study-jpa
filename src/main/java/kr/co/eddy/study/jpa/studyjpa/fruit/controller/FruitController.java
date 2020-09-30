@@ -4,9 +4,7 @@ import kr.co.eddy.study.jpa.studyjpa.fruit.domain.Fruit;
 import kr.co.eddy.study.jpa.studyjpa.fruit.service.FruitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class FruitController {
@@ -19,5 +17,11 @@ public class FruitController {
 
         return fruitService.save(fruit);
     }
+
+    @GetMapping("/fruit/{id}")
+    public Fruit getFruit(@PathVariable Long id) {
+        return fruitService.findFruitById(id);
+    }
+
 
 }
