@@ -28,4 +28,8 @@ public class FruitService {
     public List<Fruit> findFruitByName(String name) {
         return fruitRepository.findByName(name);
     }
+
+    public List<Fruit> findAllFruit() {
+        return fruitRepository.findAll();
+    }
 }
