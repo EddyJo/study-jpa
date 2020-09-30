@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -102,7 +103,6 @@ public class FruitControllerTest {
     @Test
     public void GET_전체과일리스트_조회() throws Exception {
 
-
         Fruit fruit = Fruit.builder().id((long)1).name("사과").price((long)300).build();
         Fruit fruit2 = Fruit.builder().id((long)2).name("사과").price((long)400).build();
         Fruit fruit3 = Fruit.builder().id((long)3).name("사과").price((long)500).build();
@@ -116,6 +116,27 @@ public class FruitControllerTest {
 
 
         mockMvc.perform(get("/fruits").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8"))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @DisplayName("/fruits/{name}?oreder=orderkey GET 호출")
+    @Test
+    public void GET_전체과일리스트_조회_Sorting() throws Exception {
+
+        Fruit fruit = Fruit.builder().id((long)1).name("사과").price((long)300).build();
+        Fruit fruit2 = Fruit.builder().id((long)2).name("사과").price((long)400).build();
+        Fruit fruit3 = Fruit.builder().id((long)3).name("사과").price((long)500).build();
+        Fruit fruit4 = Fruit.builder().id((long)4).name("배").price((long)1000).build();
+        Fruit fruit5 = Fruit.builder().id((long)5).name("배").price((long)300).build();
+        Fruit fruit6 = Fruit.builder().id((long)6).name("바나나").price((long)900).build();
+        List<Fruit> fruits = Arrays.asList(fruit, fruit2, fruit3, fruit4, fruit5, fruit6);
+
+
+        given(fruitService.findAllFruit("price")).willReturn(fruits);
+
+
+        mockMvc.perform(get("/fruits?order=price").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8"))
                 .andExpect(status().isOk())
                 .andDo(print());
     }

@@ -26,14 +26,16 @@ public class FruitController {
     }
 
     @GetMapping(value = "/fruits/{name}", produces = "application/json; charset=UTF-8")
-    public List<Fruit> getFruit(@PathVariable String name) {
+    public List<Fruit> getFruitsByName(@PathVariable String name) {
         return fruitService.findFruitByName(name);
     }
 
 
+
+
     @GetMapping(value = "/fruits", produces = "application/json; charset=UTF-8")
-    public List<Fruit> getFruit() {
-        return fruitService.findAllFruit();
+    public List<Fruit> getFruits(@RequestParam(value="order", required=false) String orderKey) {
+        return fruitService.findAllFruit(orderKey);
     }
 
 

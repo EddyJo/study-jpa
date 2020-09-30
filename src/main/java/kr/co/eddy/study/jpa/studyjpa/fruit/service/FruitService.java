@@ -4,6 +4,7 @@ import kr.co.eddy.study.jpa.studyjpa.fruit.domain.Fruit;
 import kr.co.eddy.study.jpa.studyjpa.fruit.repository.FruitRepository;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,5 +32,12 @@ public class FruitService {
 
     public List<Fruit> findAllFruit() {
         return fruitRepository.findAll();
+    }
+
+    public List<Fruit> findAllFruit(String orderKey) {
+        if(null == orderKey) {
+            return findAllFruit();
+        }
+        return fruitRepository.findAll(Sort.by(Sort.Direction.DESC, orderKey));
     }
 }
