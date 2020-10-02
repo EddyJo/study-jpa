@@ -8,6 +8,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FruitService {
@@ -39,5 +40,18 @@ public class FruitService {
             return findAllFruit();
         }
         return fruitRepository.findAll(Sort.by(Sort.Direction.DESC, orderKey));
+    }
+
+    public Fruit updateFruit(Long id,Fruit fruit) {
+
+        Optional<Fruit> fruitSelectd = fruitRepository.findById(id);
+
+        fruitSelectd.ifPresent( selectedFruit -> {
+                selectedFruit.setName(fruit.getName());
+                selectedFruit.setPrice(fruit.getPrice());
+
+        });
+
+        return fruitRepository.save(fruitSelectd.get());
     }
 }

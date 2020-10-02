@@ -142,6 +142,24 @@ public class FruitControllerTest {
     }
 
 
+    @DisplayName("/fruit/{id} PUT 호출")
+    @Test
+    public void UPDATE_과일정보_수정() throws Exception {
+
+        Fruit fruit = Fruit.builder().id((long)1).name("사과").price((long)400).build();
+
+        String content = objectMapper.writeValueAsString(fruit);
+        Fruit responseFruit = Fruit.builder().id((long)1).name("사과").price((long)400).build();
+        given(fruitService.updateFruit((long)1, fruit)).willReturn(responseFruit);
+
+
+        mockMvc.perform(put("/fruit/1").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8").content(content))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.price", is(400)))
+                .andDo(print());
+    }
+
+
 
 
 }
