@@ -24,7 +24,8 @@ public class FruitService {
     }
 
     public Fruit findFruitById(long id) {
-        return fruitRepository.findById(id).get();
+        return fruitRepository.findById(id)
+                              .orElseThrow(null);
     }
 
     public List<Fruit> findFruitByName(String name) {
